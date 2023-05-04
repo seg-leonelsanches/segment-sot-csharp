@@ -9,3 +9,16 @@ Requires at least .NET 7.
 ```
 dotnet run
 ```
+
+## Scaffolding
+
+```
+dotnet aspnet-codegenerator controller \
+    -api \
+    -async \
+    --controllerName UsersController \
+    --controllerNamespace SegmentSoTCSharp.Controllers \
+    --model SegmentSoTCSharp.Models.User \
+    --dataContext SoTContext \
+    --relativeFolderPath ./Controllers
+```

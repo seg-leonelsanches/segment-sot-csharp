@@ -11,55 +11,55 @@ namespace SegmentSoTCSharp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class UsersTraitsController : ControllerBase
     {
         private readonly SoTContext _context;
 
-        public UsersController(SoTContext context)
+        public UsersTraitsController(SoTContext context)
         {
             _context = context;
         }
 
-        // GET: api/Users
+        // GET: api/UsersTraits
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<UserTrait>>> GetUserTraits()
         {
-          if (_context.Users == null)
+          if (_context.UserTraits == null)
           {
               return NotFound();
           }
-            return await _context.Users.ToListAsync();
+            return await _context.UserTraits.ToListAsync();
         }
 
-        // GET: api/Users/5
+        // GET: api/UsersTraits/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
+        public async Task<ActionResult<UserTrait>> GetUserTrait(Guid id)
         {
-          if (_context.Users == null)
+          if (_context.UserTraits == null)
           {
               return NotFound();
           }
-            var user = await _context.Users.FindAsync(id);
+            var userTrait = await _context.UserTraits.FindAsync(id);
 
-            if (user == null)
+            if (userTrait == null)
             {
                 return NotFound();
             }
 
-            return user;
+            return userTrait;
         }
 
-        // PUT: api/Users/5
+        // PUT: api/UsersTraits/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
+        public async Task<IActionResult> PutUserTrait(Guid id, UserTrait userTrait)
         {
-            if (id != user.UserId)
+            if (id != userTrait.UserTraitId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(user).State = EntityState.Modified;
+            _context.Entry(userTrait).State = EntityState.Modified;
 
             try
             {
@@ -67,7 +67,7 @@ namespace SegmentSoTCSharp.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserExists(id))
+                if (!UserTraitExists(id))
                 {
                     return NotFound();
                 }
@@ -80,44 +80,44 @@ namespace SegmentSoTCSharp.Controllers
             return NoContent();
         }
 
-        // POST: api/Users
+        // POST: api/UsersTraits
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<UserTrait>> PostUserTrait(UserTrait userTrait)
         {
-          if (_context.Users == null)
+          if (_context.UserTraits == null)
           {
-              return Problem("Entity set 'SoTContext.Users'  is null.");
+              return Problem("Entity set 'SoTContext.UserTraits'  is null.");
           }
-            _context.Users.Add(user);
+            _context.UserTraits.Add(userTrait);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUser", new { id = user.UserId }, user);
+            return CreatedAtAction("GetUserTrait", new { id = userTrait.UserTraitId }, userTrait);
         }
 
-        // DELETE: api/Users/5
+        // DELETE: api/UsersTraits/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
+        public async Task<IActionResult> DeleteUserTrait(Guid id)
         {
-            if (_context.Users == null)
+            if (_context.UserTraits == null)
             {
                 return NotFound();
             }
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
+            var userTrait = await _context.UserTraits.FindAsync(id);
+            if (userTrait == null)
             {
                 return NotFound();
             }
 
-            _context.Users.Remove(user);
+            _context.UserTraits.Remove(userTrait);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool UserExists(int id)
+        private bool UserTraitExists(Guid id)
         {
-            return (_context.Users?.Any(e => e.UserId == id)).GetValueOrDefault();
+            return (_context.UserTraits?.Any(e => e.UserTraitId == id)).GetValueOrDefault();
         }
     }
 }
