@@ -12,15 +12,19 @@ namespace SegmentSoTCSharp.Controllers
     [ApiController]
     public class TestController : ControllerBase
     {
-        public TestController()
-        {
+        private readonly IConfiguration _config;
 
+        public TestController(IConfiguration config)
+        {
+            _config = config;
         }
 
         [HttpGet]
         public String GetTest()
         {
-            return Environment.GetEnvironmentVariable("SEGMENT_WRITE_KEY");
+            var segmentWriteKey = _config.GetValue<String>(
+                "AppSettings:SegmentWriteKey");
+            return segmentWriteKey;
         }
     }
 }
