@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace SegmentSoTCSharp.Models;
 
-public class SoTContext : DbContext
+public class SoTContext : IdentityDbContext<IdentityUser>
 {
     public SoTContext(DbContextOptions<SoTContext> options)
         : base(options)
