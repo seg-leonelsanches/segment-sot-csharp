@@ -3,13 +3,19 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Segment.Analytics;
+using Segment.Analytics.Utilities;
 using SegmentSoTCSharp.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddNewtonsoftJson(options =>
+        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+    );
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddDbContext<SoTContext>(opt =>
     opt.UseInMemoryDatabase("SoT"));
@@ -44,6 +50,15 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["AppSettings:JWT:Secret"]))
     };
 });
+
+var configuration = new Configuration(
+    builder.Configuration["AppSettings:SegmentWriteKey"],
+    flushAt: 1,
+    flushInterval: 10,
+    storageProvider: new InMemoryStorageProvider()
+);
+
+builder.Services.AddScoped(_ => new Analytics(configuration));
 
 var app = builder.Build();
 
